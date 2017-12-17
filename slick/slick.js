@@ -191,7 +191,7 @@
     Slick.prototype.activateADA = function() {
         var _ = this;
 
-        _.$slideTrack.find('.slick-active').attr({
+        _.$slideTrack.children('.slick-active').attr({
             'aria-hidden': 'false'
         }).find('a, input, button, select').attr({
             'tabindex': '0'
@@ -1229,7 +1229,7 @@
         centerOffset = _.options.centerMode === true ? _.slideWidth * Math.floor(_.options.slidesToShow / 2) : 0;
 
         if (_.options.swipeToSlide === true) {
-            _.$slideTrack.find('.slick-slide').each(function(index, slide) {
+            _.$slideTrack.children('.slick-slide').each(function(index, slide) {
                 if (slide.offsetLeft - centerOffset + ($(slide).outerWidth() / 2) > (_.swipeLeft * -1)) {
                     swipedSlide = slide;
                     return false;
@@ -1304,7 +1304,7 @@
                     return (val >= 0) && (val < _.slideCount);
                 });
 
-        _.$slides.add(_.$slideTrack.find('.slick-cloned')).attr({
+        _.$slides.add(_.$slideTrack.children('.slick-cloned')).attr({
             'aria-hidden': 'true',
             'tabindex': '-1'
         }).find('a, input, button, select').attr({
@@ -1312,7 +1312,7 @@
         });
 
         if (_.$dots !== null) {
-            _.$slides.not(_.$slideTrack.find('.slick-cloned')).each(function(i) {
+            _.$slides.not(_.$slideTrack.children('.slick-cloned')).each(function(i) {
                 var slideControlIndex = tabControlIndexes.indexOf(i);
 
                 $(this).attr({
@@ -2424,7 +2424,7 @@
                         .attr('data-slick-index', slideIndex + _.slideCount)
                         .appendTo(_.$slideTrack).addClass('slick-cloned');
                 }
-                _.$slideTrack.find('.slick-cloned').find('[id]').each(function() {
+                _.$slideTrack.children('.slick-cloned').find('[id]').each(function() {
                     $(this).attr('id', '');
                 });
 
@@ -2728,6 +2728,10 @@
     Slick.prototype.swipeHandler = function(event) {
 
         var _ = this;
+
+        if (_.options.stopSwipePropagation || _.options.stopSwipePropagation === undefined){
+          event.stopPropagation();
+        }
 
         if ((_.options.swipe === false) || ('ontouchend' in document && _.options.swipe === false)) {
             return;
